@@ -1,0 +1,121 @@
+1.For this course, you need to be using a Unix shell like Bash or ZSH. If you are on Linux 
+or macOS, you don’t have to do anything special. If you are on Windows, you need to make 
+sure you are not running cmd.exe or PowerShell; you can use Windows Subsystem for Linux or a 
+Linux virtual machine to use Unix-style command-line tools. To make sure you’re running an 
+appropriate shell, you can try the command echo /bin/bash. If it says something like 
+/bin/bash or /usr/bin/zsh, that means you’re running the right program.
+
+bash-3.2$ echo $SHELL
+/bin/bash
+
+2. Create a new directory called missing under /tmp.
+bash-3.2$ cd ~
+bash-3.2$ cd /tmp
+bash-3.2$ pwd
+/tmp
+bash-3.2$ mkdir missing
+
+3. Look up the touch program. The man program is your friend.
+bash-3.2$ man touch
+
+4. Use touch to create a new file called semester in missing.
+bash-3.2$ pwd
+/tmp/missing
+bash-3.2$ touch semester.txt
+
+5. Write the following into that file, one line at a time:
+bash-3.2$ echo '#!/bin/sh' >> semester.txt
+bash-3.2$ echo 'curl --head --silent https://missing.csail.mit.edu' >> semester.txt
+bash-3.2$ cat semester.txt 
+#!/bin/sh
+curl --head --silent https://missing.csail.mit.edu
+
+6. Try to execute the file, i.e. type the path to the script (./semester) into your shell 
+and press enter. Understand why it doesn’t work by consulting the output of ls (hint: look 
+at the permission bits of the file).
+bash-3.2$ pwd
+/tmp/missing
+bash-3.2$ ./semester.txt
+bash: ./semester.txt: Permission denied
+bash-3.2$ ls -l
+total 8
+-rw-r--r--  1 locspc  wheel  62 24 May 11:58 semester.txt
+bash-3.2$ echo "This doesn't work because I don't have execute permisisons. The user 
+permissions are rw-"
+This doesn't work because I don't have execute permisisons. The user permissions are rw-
+
+7. Run the command by explicitly starting the sh interpreter, and giving 
+it the file semester as the first argument, i.e. sh semester. Why does this work, while 
+./semester didn’t?
+bash-3.2$ sh ./semester.txt
+HTTP/2 200 
+server: GitHub.com
+content-type: text/html; charset=utf-8
+last-modified: Sat, 06 May 2023 11:21:52 GMT
+access-control-allow-origin: *
+etag: "64563850-1f86"
+expires: Mon, 22 May 2023 12:04:01 GMT
+cache-control: max-age=600
+x-proxy-cache: MISS
+x-github-request-id: A5C4:0E9A:16284C:192BA3:646B57D7
+accept-ranges: bytes
+date: Wed, 24 May 2023 02:07:03 GMT
+via: 1.1 varnish
+age: 0
+x-served-by: cache-mel11279-MEL
+x-cache: HIT
+x-cache-hits: 1
+x-timer: S1684894023.943270,VS0,VE220
+vary: Accept-Encoding
+x-fastly-request-id: 67c1b34e7375df4aeea504f8e3f183914fd2a036
+content-length: 8070
+
+bash-3.2$ echo "the sh command opens a shell and executes the contents of the semester.txt 
+file. The reason this works is because .txt does not have execute permissions. But by 
+opening a new shell with those contents, the shell is able to execute"
+
+8. Look up the chmod program (e.g. use man chmod).
+bash-3.2$ man chmod
+
+9. Use chmod to make it possible to run the command ./semester rather than having to type sh 
+semester. How does your shell know that the file is supposed to be interpreted using sh? See 
+this page on the shebang line for more information.
+bash-3.2$ chmod 755 semester.txt
+bash-3.2$ ls -l
+total 8
+-rwxr-xr-x  1 locspc  wheel  62 24 May 11:58 semester.txt
+bash-3.2$ ./semester.txt
+HTTP/2 200 
+server: GitHub.com
+content-type: text/html; charset=utf-8
+last-modified: Sat, 06 May 2023 11:21:52 GMT
+access-control-allow-origin: *
+etag: "64563850-1f86"
+expires: Mon, 22 May 2023 12:04:01 GMT
+cache-control: max-age=600
+x-proxy-cache: MISS
+x-github-request-id: A5C4:0E9A:16284C:192BA3:646B57D7
+accept-ranges: bytes
+date: Wed, 24 May 2023 02:17:12 GMT
+via: 1.1 varnish
+age: 0
+x-served-by: cache-mel11246-MEL
+x-cache: HIT
+x-cache-hits: 1
+x-timer: S1684894633.589684,VS0,VE220
+vary: Accept-Encoding
+x-fastly-request-id: 7df1911d287201ac51f0b1a4ac295d175ad078d0
+content-length: 8070
+
+bash-3.2$ echo "According the wikipedia link given, because the text file started with the 
+shebang #!, now that the file has x permissions it reads #!/bin/sh as open a new shell in 
+the same way the sh command works."
+According the wikipedia link given, because the text file started with the shebang #!, now 
+that the file has x permissions it reads #!/bin/sh as open a new shell in the same way the 
+sh command works.
+
+bash-3.2$ cd ~
+bash-3.2$ cd repos/The-Missing-Semester-of-Your-CS-Education/
+bash-3.2$ cd lecture1_theshell/
+bash-3.2$ touch exercises.txt
+bash-3.2$ nano exercises.txt

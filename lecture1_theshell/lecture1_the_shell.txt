@@ -1,0 +1,9 @@
+Lecture 1 - The Shell
+
+- How does the shell work? When you buy a computer, it comes pre-installed with file explored, web browser etc. The shell is pre-installed with basic programs 
+- Programs shell uses are in a lot of paths, extensive list can be found in "echo $PATH"
+- ./ = current directory     ../ = parent directory
+- CONTROL + L - clear terminal
+- sudo - do as superuser (admin)
+- sudo su lets you use terminal as root user. You can tell this as LHS will say [root@PATH]# 
+instead of [user@PATH]$
